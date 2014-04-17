@@ -4,7 +4,7 @@ var bugMonitor = {
 	warnColor: [240, 65, 36, 255],
 	alarmColor: [240, 138, 36, 255],
 	okColor: [67, 172, 106, 255],
-	netDisabledColor: [142, 142, 142, 255]
+	netDisabledColor: [142, 142, 142, 255],
 
 	requestBugs: function() {
 		var req = new XMLHttpRequest();
@@ -17,7 +17,7 @@ var bugMonitor = {
 	},
 
 	cannotLoad: function (e, a) {
-		chrome.browserAction.setBadgeText({ text: 'x'})
+		chrome.browserAction.setBadgeText({ text: 'x' });
 		chrome.browserAction.setBadgeBackgroundColor({ color: netDisabledColor });
 	},
 

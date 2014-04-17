@@ -1,19 +1,18 @@
 {
   "manifest_version": 2,
-
   "name": "SimpleBugMonitor",
   "description": "MonitorBugs",
-  "version": "1.1.3",
-
-	"background": {
-		"scripts": ["background.js"]
-	},
- 
+  "version": "1.1.4",
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
   "browser_action": {
     "default_icon": "bug.png",
     "default_title": "Bug presenti"
   },
-   "permissions": [
+  "permissions": [
     "http://*.yoox.net/",
     "tabs"
   ]

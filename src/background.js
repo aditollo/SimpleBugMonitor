@@ -4,13 +4,21 @@ var bugMonitor = {
 	warnColor: [240, 65, 36, 255],
 	alarmColor: [240, 138, 36, 255],
 	okColor: [67, 172, 106, 255],
+	netDisabledColor: [142, 142, 142, 255]
 
 	requestBugs: function() {
 		var req = new XMLHttpRequest();
 		req.overrideMimeType("application/json"); 
+		req.addEventListener("load", this.updateBadge.bind(this), false);
+		req.addEventListener("error", this.cannotLoad.bind(this), false);
+		req.addEventListener("abort", this.cannotLoad.bind(this), false);
 		req.open("GET", this.bugApiUrl, true);
-		req.onload = this.updateBadge.bind(this);
 		req.send(null);
+	},
+
+	cannotLoad: function (e, a) {
+		chrome.browserAction.setBadgeText({ text: 'x'})
+		chrome.browserAction.setBadgeBackgroundColor({ color: netDisabledColor });
 	},
 
 	updateBadge: function (e, a) {

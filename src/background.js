@@ -1,59 +1,62 @@
-var bugMonitor = {
+(function(){
+	"use strict";
 
-	bugApiUrl: 'http://tcwiki.wp.yoox.net/tools/dashboard.api.php?op=get&key=bugs',
-	colors: {
-		ok: [67, 172, 106, 255],
-		warn: [240, 65, 36, 255],
-		alarm: [240, 138, 36, 255],
-		unknow: [142, 142, 142, 255],
-	},
-	lanAvailable: true,
+	var bugMonitor = {
 
-	requestBugs: function() {
-		var req = new XMLHttpRequest();
-		req.overrideMimeType("application/json"); 
-		req.addEventListener("load", this.updateBadge.bind(this), false);
-		req.addEventListener("error", this.cannotLoad.bind(this), false);
-		req.addEventListener("abort", this.cannotLoad.bind(this), false);
-		req.open("GET", this.bugApiUrl, true);
-		req.send(null);
-	},
+		bugApiUrl: 'http://tcwiki.wp.yoox.net/tools/dashboard.api.php?op=get&key=bugs',
+		colors: {
+			ok: [67, 172, 106, 255],
+			warn: [240, 65, 36, 255],
+			alarm: [240, 138, 36, 255],
+			unknow: [142, 142, 142, 255],
+		},
+		lanAvailable: true,
 
-	cannotLoad: function (e, a) {
-		this.lanAvailable = false;
-		chrome.browserAction.setBadgeText({ text: 'x' });
-		chrome.browserAction.setBadgeBackgroundColor({ color: this.colors.unknow });
-	},
+		requestBugs: function() {
+			var req = new XMLHttpRequest();
+			req.overrideMimeType("application/json"); 
+			req.addEventListener("load", this.updateBadge.bind(this), false);
+			req.addEventListener("error", this.cannotLoad.bind(this), false);
+			req.addEventListener("abort", this.cannotLoad.bind(this), false);
+			req.open("GET", this.bugApiUrl, true);
+			req.send(null);
+		},
 
-	updateBadge: function (e, a) {
-		this.lanAvailable = true;
+		cannotLoad: function (e, a) {
+			this.lanAvailable = false;
+			chrome.browserAction.setBadgeText({ text: 'x' });
+			chrome.browserAction.setBadgeBackgroundColor({ color: this.colors.unknow });
+		},
 
-		var response = JSON.parse(e.target.responseText);
+		updateBadge: function (e, a) {
+			this.lanAvailable = true;
 
-		var badgedBugs = response.our;
-		var badgeColor;
+			var response = JSON.parse(e.target.responseText);
 
-		if (badgedBugs > 0) {
-			badgeColor = badgedBugs === 1 ? this.colors.warn : this.colors.alarm;
-		} else {
-			badgeColor = this.colors.ok;
+			var badgedBugs = response.our;
+			var badgeColor;
+
+			if (badgedBugs > 0) {
+				badgeColor = badgedBugs === 1 ? this.colors.warn : this.colors.alarm;
+			} else {
+				badgeColor = this.colors.ok;
+			}
+
+			chrome.browserAction.setBadgeText({
+				text: badgedBugs.toString()
+			});
+
+			chrome.browserAction.setBadgeBackgroundColor({
+				color: badgeColor
+			});
 		}
-
-		chrome.browserAction.setBadgeText({
-			text: badgedBugs.toString()
-		});
-
-		chrome.browserAction.setBadgeBackgroundColor({
-			color: badgeColor
-		});
-	}
-};
+	};
 
 
-var dashboardUrl = 'http://tcwiki.wp.yoox.net/tools/dashboard.php';
+	var dashboardUrl = 'http://tcwiki.wp.yoox.net/tools/dashboard.php';
 
 
-function goToDashboard() {
+	function goToDashboard() {
 
 	// cant'd do nothing if the internal servers aren't available
 	if (!bugMonitor.lanAvailable) { return; }
@@ -79,3 +82,8 @@ bugMonitor.requestBugs();
 setInterval(function() {
 	bugMonitor.requestBugs();
 }, 60*1000);
+
+
+
+
+})();

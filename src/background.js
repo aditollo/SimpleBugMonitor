@@ -1,10 +1,13 @@
 var bugMonitor = {
 
 	bugApiUrl: 'http://tcwiki.wp.yoox.net/tools/dashboard.api.php?op=get&key=bugs',
-	warnColor: [240, 65, 36, 255],
-	alarmColor: [240, 138, 36, 255],
-	okColor: [67, 172, 106, 255],
-	netDisabledColor: [142, 142, 142, 255],
+
+	colors: {
+		ok: [67, 172, 106, 255],
+		warn: [240, 65, 36, 255],
+		alarm: [240, 138, 36, 255],
+		unknow: [142, 142, 142, 255],
+	},
 
 	requestBugs: function() {
 		var req = new XMLHttpRequest();
@@ -18,17 +21,17 @@ var bugMonitor = {
 
 	cannotLoad: function (e, a) {
 		chrome.browserAction.setBadgeText({ text: 'x' });
-		chrome.browserAction.setBadgeBackgroundColor({ color: netDisabledColor });
+		chrome.browserAction.setBadgeBackgroundColor({ color: this.colors.unknow });
 	},
 
 	updateBadge: function (e, a) {
 		var response = JSON.parse(e.target.responseText);
 
 		var badgedBugs = response.our;
-		var badgeColor = this.okColor;
+		var badgeColor = this.colors.ok;
 
 		if (badgedBugs > 0) {
-			badgeColor = badgedBugs === 1 ? this.warnColor : this.alarmColor;
+			badgeColor = badgedBugs === 1 ? this.colors.warn : this.colors.alarm;
 		}
 
 		chrome.browserAction.setBadgeText({

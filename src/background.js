@@ -1,13 +1,13 @@
 var bugMonitor = {
 
 	bugApiUrl: 'http://tcwiki.wp.yoox.net/tools/dashboard.api.php?op=get&key=bugs',
-
 	colors: {
 		ok: [67, 172, 106, 255],
 		warn: [240, 65, 36, 255],
 		alarm: [240, 138, 36, 255],
 		unknow: [142, 142, 142, 255],
 	},
+	lanAvailable: true,
 
 	requestBugs: function() {
 		var req = new XMLHttpRequest();
@@ -20,18 +20,23 @@ var bugMonitor = {
 	},
 
 	cannotLoad: function (e, a) {
+		this.lanAvailable = false;
 		chrome.browserAction.setBadgeText({ text: 'x' });
 		chrome.browserAction.setBadgeBackgroundColor({ color: this.colors.unknow });
 	},
 
 	updateBadge: function (e, a) {
+		this.lanAvailable = true;
+
 		var response = JSON.parse(e.target.responseText);
 
 		var badgedBugs = response.our;
-		var badgeColor = this.colors.ok;
+		var badgeColor;
 
 		if (badgedBugs > 0) {
 			badgeColor = badgedBugs === 1 ? this.colors.warn : this.colors.alarm;
+		} else {
+			badgeColor = this.colors.ok;
 		}
 
 		chrome.browserAction.setBadgeText({
@@ -49,6 +54,11 @@ var dashboardUrl = 'http://tcwiki.wp.yoox.net/tools/dashboard.php';
 
 
 function goToDashboard() {
+
+	// cant'd do nothing if the internal servers aren't available
+	if (!this.lanAvailable) { return; }
+
+	// find the right tab or creates a new one
 	chrome.tabs.getAllInWindow(undefined, function(tabs) {
 		for (var i = 0, tab; tab = tabs[i]; i++) {
 			if (tab.url && tab.url === dashboardUrl) {

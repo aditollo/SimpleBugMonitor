@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "SimpleBugMonitor",
   "description": "MonitorBugs",
-  "version": "1.1.4",
+  "version": "1.1.6",
   "background": {
     "scripts": [
       "background.js"

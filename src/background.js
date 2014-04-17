@@ -56,7 +56,7 @@ var dashboardUrl = 'http://tcwiki.wp.yoox.net/tools/dashboard.php';
 function goToDashboard() {
 
 	// cant'd do nothing if the internal servers aren't available
-	if (!this.lanAvailable) { return; }
+	if (!bugMonitor.lanAvailable) { return; }
 
 	// find the right tab or creates a new one
 	chrome.tabs.getAllInWindow(undefined, function(tabs) {

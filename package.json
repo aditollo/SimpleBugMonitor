@@ -1,6 +1,6 @@
 {
   "name": "SimpleBugMonitor",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.6.3",

@@ -4,6 +4,10 @@
 	var bugMonitor = {
 
 		bugApiUrl: 'http://tcwiki.wp.yoox.net/tools/dashboard.api.php?op=get&key=bugs',
+		bugs: {
+			open: []
+		},
+
 		colors: {
 			ok: [67, 172, 106, 255],
 			warn: [240, 65, 36, 255],
@@ -15,7 +19,7 @@
 		requestBugs: function() {
 			var req = new XMLHttpRequest();
 			req.overrideMimeType("application/json"); 
-			req.addEventListener("load", this.updateBadge.bind(this), false);
+			req.addEventListener("load", this.processResponse.bind(this), false);
 			req.addEventListener("error", this.cannotLoad.bind(this), false);
 			req.addEventListener("abort", this.cannotLoad.bind(this), false);
 			req.open("GET", this.bugApiUrl, true);
@@ -28,10 +32,14 @@
 			chrome.browserAction.setBadgeBackgroundColor({ color: this.colors.unknow });
 		},
 
-		updateBadge: function (e, a) {
+		processResponse: function (e, a) {
 			this.lanAvailable = true;
 
 			var response = JSON.parse(e.target.responseText);
+
+			this.bugs.open = response.open;
+
+			console.log(this.bugs.open.length);
 
 			var badgedBugs = response.our;
 			var badgeColor;
@@ -54,27 +62,47 @@
 
 
 	var dashboardUrl = 'http://tcwiki.wp.yoox.net/tools/dashboard.php';
+	var bugTrackerUrl = 'http://bugtracker.yoox.net/view.php?id=';
 
+
+	function openUrl(url) {
+
+		// find the right tab or creates a new one
+		chrome.tabs.getAllInWindow(undefined, function(tabs) {
+			for (var i = 0, tab; tab = tabs[i]; i++) {
+				if (tab.url && tab.url === url) {
+					chrome.tabs.update(tab.id, {selected: true});
+					return;
+				}
+			}
+			chrome.tabs.create({ url: url });
+		});
+
+	}
 
 	function goToDashboard() {
 
-	// cant'd do nothing if the internal servers aren't available
+		// cant'd do nothing if the internal servers aren't available
+		
+
+		
+	}
+
+
+chrome.browserAction.onClicked.addListener(function() {
 	if (!bugMonitor.lanAvailable) { return; }
 
-	// find the right tab or creates a new one
-	chrome.tabs.getAllInWindow(undefined, function(tabs) {
-		for (var i = 0, tab; tab = tabs[i]; i++) {
-			if (tab.url && tab.url === dashboardUrl) {
-				chrome.tabs.update(tab.id, {selected: true});
-				return;
-			}
-		}
-		chrome.tabs.create({ url: dashboardUrl });
-	});
-}
+	if (bugMonitor.bugs.open.length > 0) {
+
+		var bug = bugMonitor.bugs.open[0];
+		openUrl(bugTrackerUrl + bug.bug_id);
+
+	} else {
+		openUrl(dashboardUrl);
+	}
 
 
-chrome.browserAction.onClicked.addListener(goToDashboard);
+});
 
 
 

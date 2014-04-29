@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "SimpleBugMonitor",
   "description": "MonitorBugs",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "background": {
     "scripts": [
       "background.js"
@@ -15,6 +15,5 @@
   "permissions": [
     "http://*.yoox.net/",
     "tabs"
-  ],
-  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'"
+  ]
 }

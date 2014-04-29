@@ -89,18 +89,15 @@
 
 chrome.browserAction.onClicked.addListener(function() {
 	if (!bugMonitor.lanAvailable) {
-		ga('send', 'event', 'MainButton', 'click', 'notConnected');
 		return;
 	}
 
 	if (bugMonitor.bugs.open.length > 0) {
 		var bug = bugMonitor.bugs.open[0];
 		openUrl(bugTrackerUrl + bug.bug_id);
-		ga('send', 'event', 'MainButton', 'click', 'bug');
 
 	} else {
 		openUrl(dashboardUrl);
-		ga('send', 'event', 'MainButton', 'click', 'dashboard');
 	}
 
 
@@ -112,18 +109,6 @@ bugMonitor.requestBugs();
 setInterval(function() {
 	bugMonitor.requestBugs();
 }, 60*1000);
-
-
-
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-30206559-2', 'yoox.net');
-ga('send', 'pageview');
-
-
 
 
 })();

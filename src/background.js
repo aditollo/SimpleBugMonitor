@@ -1,3 +1,4 @@
+/*
 (function(){
 	"use strict";
 
@@ -111,4 +112,4 @@ setInterval(function() {
 }, 60*1000);
 
 
-})();
+})();*/

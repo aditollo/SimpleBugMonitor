@@ -1,19 +1,27 @@
 {
-  "manifest_version": 2,
-  "name": "SimpleBugMonitor",
-  "description": "MonitorBugs",
-  "version": "1.2.2",
-  "background": {
-    "scripts": [
-      "background.js"
-    ]
-  },
-  "browser_action": {
-    "default_icon": "bug.png",
-    "default_title": "Bug presenti"
-  },
-  "permissions": [
-    "http://*.yoox.net/",
-    "tabs"
-  ]
+	"manifest_version": 2,
+	"name": "Bookmarklets",
+	"description": "Bookmarklets collection for thecorner",
+	"version": "0.0.1",
+//	"background": {
+//		"scripts": [
+//			"background.js"
+//		]
+//	},
+	"content_scripts": [ {
+		"js": [ "jquery.min.js", "content.js" ],
+//		"css": ["css/foundation.css"],
+		"run_at": "document_end",
+		"matches": ["<all_urls>"]
+	}],
+	"browser_action": {
+		"default_icon": "wand.png",
+		"default_title": "Click for the Magic",
+		"default_popup": "popup.html"
+	},
+	"permissions": [
+//		"http://*.yoox.net/",
+//		"storage",
+		"tabs"
+	]
 }

@@ -1,15 +1,9 @@
 #SimpleBugMonitor
 
 
-Un tool per mostrare alcune info utili al team di interfaccia
+Tool per avere a portata di mano bookmarklets.
 
 ##Changelog
 
-###1.2.2
-Tracciamenti tolti - standby
-
-###1.2.1
-Inseriti dei semplici tracciamenti
-
-###1.2.0
-Al click, se ci sono bug aperti, rimanda al primo.
+###0.0.1
+Prima versione con script di login/logout

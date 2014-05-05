@@ -23,9 +23,20 @@
 				sortRule: 'PriceAscending'
 			});
 		},
-//		openTimedLayer: function(){
+		openTimedLayer: function(){
 //			%7Bfunction%20deleteSession()%7Bvar%20timeToReplace%3Bvar%20myooxTime%20%3D%20_%24Y.cookie.get('MYOOX'%2C%20'TIME')%3Bvar%20accountTime%20%3D%20_%24Y.cookie.get('ACCOUNT'%2C%20'TIME')%3Bif%20(myooxTime)%20%7BtimeToReplace%20%3D%20myooxTime.substring(0%2C%20myooxTime.length-2)%20%2B%20'00'%3B_%24Y.cookie.setProps('MYOOX'%2C%20%7B%20'TIME'%20%3A%20timeToReplace%20%7D)%3B%7Dif%20(accountTime)%20%7BtimeToReplace%20%3D%20accountTime.substring(0%2C%20accountTime.length-2)%20%2B%20'00'%3B_%24Y.cookie.setProps('ACCOUNT'%2C%20%7B%20'TIME'%20%3A%20timeToReplace%20%7D)%3B%7D%7DdeleteSession()%7D
-//		},
+					var timeToReplace;
+					var myooxTime = _$Y.cookie.get('MYOOX', 'TIME');
+					var accountTime = _$Y.cookie.get('ACCOUNT', 'TIME');
+					if (myooxTime) {
+						timeToReplace = myooxTime.substring(0, myooxTime.length-2) + '00';
+						_$Y.cookie.setProps('MYOOX', { 'TIME' : timeToReplace });
+					}
+					if (accountTime) {
+						timeToReplace = accountTime.substring(0, accountTime.length-2) + '00';
+						_$Y.cookie.setProps('ACCOUNT', { 'TIME' : timeToReplace });
+					}
+		},
 		delNewsLetterLayerCookie: function(){
 			_$Y.cookie.del('LAYER_NL');
 		},
